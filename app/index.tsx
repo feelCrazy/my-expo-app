@@ -24,6 +24,7 @@ export default function App() {
         options={{
           title: "首页",
           headerTitle: () => <HeaderImg />,
+          headerTitleAlign: "left",
         }}
       />
 
