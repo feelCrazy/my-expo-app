@@ -6,14 +6,17 @@ import {
   Button,
   Image,
   ScrollView,
-  Pressable,
-  TouchableHighlight,
+  FlatList,
 } from "react-native"
 import { useLink, Link, Stack } from "expo-router"
 import { Drawer } from "expo-router/drawer"
+import { DrawerNavigationProp } from "@react-navigation/drawer"
+
+import { SafeAreaView } from "react-native-safe-area-context"
 import TagList from "../components/tagList"
-import { Ionicons } from "@expo/vector-icons"
-import { MaterialCommunityIcons } from "@expo/vector-icons"
+
+import Item from "../components/list/item"
+import Header from "../components/Header"
 
 const HeaderImg = () => {
   return (
@@ -26,191 +29,48 @@ const HeaderImg = () => {
     </View>
   )
 }
+type RootStackParamList = {
+  App: undefined //current screen
+  PdpComments: { slug: string } // a screen that we are
+}
 
-export default function App() {
+type Props = {
+  navigation: DrawerNavigationProp<RootStackParamList, "App">
+}
+
+export default function App({ navigation }: Props) {
   const history = useLink()
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={{ flex: 1 }}>
       <Drawer.Screen
         options={{
           title: "首页",
           headerTitle: () => <HeaderImg />,
           headerTitleAlign: "left",
+          headerShown: false,
         }}
       />
 
       <View className='flex-1 bg-gray-100'>
-        <View className='bg-white'>
-          <TagList />
-        </View>
-
-        <View className='bg-white px-3 py-3 mb-2'>
-          <View className='flex-row items-center justify-between'>
-            <View className='flex-row items-center'>
-              <Ionicons name='people-circle' size={24} color='black' />
-              <Text className='font-bold ml-2 mr-1'>crazay21</Text>
-              <Text className='text-gray-400'>4h</Text>
+        <FlatList
+          stickyHeaderIndices={[0]}
+          stickyHeaderHiddenOnScroll
+          ListHeaderComponent={
+            <View>
+              <Header navigation={navigation} />
+              <View className='bg-white'>
+                <TagList />
+              </View>
             </View>
-
-            <View className='mr-2 flex-row'>
-              <Text className='p-1'>
-                <Ionicons name='bookmark' size={12} color='white' />
-              </Text>
-              <TouchableHighlight className='p-1 pl-3'>
-                <Ionicons
-                  name='ellipsis-vertical-sharp'
-                  size={12}
-                  color='black'
-                />
-              </TouchableHighlight>
-            </View>
-          </View>
-
-          <View className='py-1'>
-            <Text className='text-base font-bold'>Fsadgsadg 撒谎</Text>
-          </View>
-
-          <View className='h-52 bg-gray-100 -mx-3'></View>
-          <View className='-ml-3'>
-            <TagList />
-          </View>
-
-          <View className='flex-row items-center justify-between'>
-            <View className='flex-row items-center'>
-              <Text className='px-1'>
-                <MaterialCommunityIcons
-                  name='arrow-up-bold'
-                  size={28}
-                  color='#acacac'
-                />
-              </Text>
-
-              <Text className='text-gray-400 text-base font-bold '>148</Text>
-            </View>
-            <View className='flex-row items-center ml-4'>
-              <Text className='rotate-180 px-1'>
-                <MaterialCommunityIcons
-                  name='arrow-up-bold'
-                  size={28}
-                  color='#acacac'
-                />
-              </Text>
-
-              <Text className='text-gray-400 text-base font-bold'>148</Text>
-            </View>
-
-            <View className='flex-row items-center '>
-              <Text className='px-2 ml-8'>
-                <MaterialCommunityIcons
-                  name='message'
-                  size={24}
-                  color='#acacac'
-                />
-              </Text>
-              <Text className='text-gray-400 text-base font-bold'>44</Text>
-            </View>
-
-            <View className='flex-row items-center '>
-              <Text className='px-2 '>
-                <Ionicons name='share-social' size={24} color='#acacac' />
-              </Text>
-              <Text className='text-gray-400 text-base font-bold'>share</Text>
-            </View>
-          </View>
-        </View>
-
-        <View className='bg-white px-3 py-3 mb-2'>
-          <View className='flex-row items-center justify-between'>
-            <View className='flex-row items-center'>
-              <Ionicons name='people-circle' size={24} color='black' />
-              <Text className='font-bold ml-2 mr-1'>crazay21</Text>
-              <Text className='text-gray-400'>4h</Text>
-            </View>
-
-            <View className='mr-2 flex-row'>
-              <Text className='p-1'>
-                <Ionicons name='bookmark' size={12} color='white' />
-              </Text>
-              <TouchableHighlight className='p-1 pl-3'>
-                <Ionicons
-                  name='ellipsis-vertical-sharp'
-                  size={12}
-                  color='black'
-                />
-              </TouchableHighlight>
-            </View>
-          </View>
-
-          <View className='py-1'>
-            <Text className='text-base font-bold'>Fsadgsadg 撒谎</Text>
-          </View>
-
-          <View className='h-52bg-gray-100 -mx-3'></View>
-          <View className='-ml-3'>
-            <TagList />
-          </View>
-
-          <View className='flex-row items-center justify-between'>
-            <View className='flex-row items-center'>
-              <Text className='px-1'>
-                <MaterialCommunityIcons
-                  name='arrow-up-bold'
-                  size={28}
-                  color='#acacac'
-                />
-              </Text>
-
-              <Text className='text-gray-400 text-base font-bold '>148</Text>
-            </View>
-            <View className='flex-row items-center ml-4'>
-              <Text className='rotate-180 px-1'>
-                <MaterialCommunityIcons
-                  name='arrow-up-bold'
-                  size={28}
-                  color='#acacac'
-                />
-              </Text>
-
-              <Text className='text-gray-400 text-base font-bold'>148</Text>
-            </View>
-
-            <View className='flex-row items-center '>
-              <Text className='px-2 ml-8'>
-                <MaterialCommunityIcons
-                  name='message'
-                  size={24}
-                  color='#acacac'
-                />
-              </Text>
-              <Text className='text-gray-400 text-base font-bold'>44</Text>
-            </View>
-
-            <View className='flex-row items-center '>
-              <Text className='px-2 '>
-                <Ionicons name='share-social' size={24} color='#acacac' />
-              </Text>
-              <Text className='text-gray-400 text-base font-bold'>share</Text>
-            </View>
-          </View>
-        </View>
+          }
+          data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+          renderItem={Item}
+          keyExtractor={(item) => item.toString()}
+        />
       </View>
 
       <Button title='hello' />
-    </View>
+    </SafeAreaView>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // alignItems: "center",
-    // justifyContent: "center",
-  },
-  header: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
-  },
-})
