@@ -78,7 +78,7 @@ const Layout = () => {
           </ScrollView>
         </SafeAreaView>
       )}
-    ></Drawer>
+    />
 
     // <Stack
     //   screenOptions={{

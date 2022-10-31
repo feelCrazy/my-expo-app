@@ -1,17 +1,9 @@
 import { StatusBar } from "expo-status-bar"
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  Image,
-  ScrollView,
-  FlatList,
-} from "react-native"
+import { Text, View, Button, Animated } from "react-native"
+import { useState, useRef } from "react"
 import { useLink, Link, Stack } from "expo-router"
 import { Drawer } from "expo-router/drawer"
 import { DrawerNavigationProp } from "@react-navigation/drawer"
-
 import { SafeAreaView } from "react-native-safe-area-context"
 import TagList from "../components/tagList"
 
@@ -40,9 +32,18 @@ type Props = {
 
 export default function App({ navigation }: Props) {
   const history = useLink()
+  const [refresh, setRefresh] = useState(false)
+  const scrollOffsetY = useRef(new Animated.Value(0)).current
+  const diffClampY = Animated.diffClamp(scrollOffsetY, 0, 126)
+
+  const headerHeight = diffClampY.interpolate({
+    inputRange: [0, 140],
+    outputRange: [0, -120],
+  })
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <StatusBar style='auto' backgroundColor='#fff' />
       <Drawer.Screen
         options={{
           title: "首页",
@@ -51,24 +52,42 @@ export default function App({ navigation }: Props) {
           headerShown: false,
         }}
       />
+      <Animated.View
+        style={{
+          transform: [{ translateY: headerHeight }],
+          backgroundColor: "#fff",
+        }}
+      >
+        <Header navigation={navigation} />
+        <View className='bg-white'>
+          <TagList />
+        </View>
+      </Animated.View>
 
-      <View className='flex-1 bg-gray-100'>
-        <FlatList
-          stickyHeaderIndices={[0]}
-          stickyHeaderHiddenOnScroll
-          ListHeaderComponent={
-            <View>
-              <Header navigation={navigation} />
-              <View className='bg-white'>
-                <TagList />
-              </View>
-            </View>
-          }
-          data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
-          renderItem={Item}
-          keyExtractor={(item) => item.toString()}
-        />
-      </View>
+      <Animated.FlatList
+        style={{
+          transform: [{ translateY: headerHeight }],
+          flex: 1,
+          marginBottom: -120,
+        }}
+        bounces={false}
+        scrollEventThrottle={1}
+        onScroll={Animated.event(
+          [
+            {
+              nativeEvent: {
+                contentOffset: {
+                  y: scrollOffsetY,
+                },
+              },
+            },
+          ],
+          { useNativeDriver: true }
+        )}
+        data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+        renderItem={Item}
+        keyExtractor={(item) => item.toString()}
+      />
 
       <Button title='hello' />
     </SafeAreaView>
