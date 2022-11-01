@@ -30,7 +30,7 @@ const Item = (props: Props) => {
         <Text className='text-base font-bold'>Fsadgsadg 撒谎</Text>
       </View>
 
-      <View className='h-52 bg-gray-100 -mx-3'></View>
+      <View className='h-52 bg-red-100 -mx-3'></View>
       <View className='-ml-3'>
         <TagList />
       </View>

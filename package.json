@@ -11,7 +11,9 @@
   "dependencies": {
     "@react-navigation/drawer": "^6.5.0",
     "expo": "~46.0.16",
-    "expo-router": "^0.0.33",
+    "expo-constants": "~13.2.4",
+    "expo-linking": "~3.2.2",
+    "expo-router": "^0.0.34",
     "expo-status-bar": "~1.4.0",
     "nativewind": "^2.0.11",
     "react": "18.0.0",
